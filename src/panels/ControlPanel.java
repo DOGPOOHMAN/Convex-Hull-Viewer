@@ -4,6 +4,8 @@ package userInterface;
 import convexAlgorithm.Point;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -58,6 +60,12 @@ public class ControlPanel extends JPanel {
 
     }
 
+    class autoAddListener implements ActionListener{
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        }
+    }
 
 }
