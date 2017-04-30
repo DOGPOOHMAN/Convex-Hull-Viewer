@@ -31,9 +31,10 @@ public class ConvexHull {
     public List<Point> findConvexHullPoints(){
 
         if (overallPoints == null) return null;
-        if (overallPoints.isEmpty()) return null;
+        if (overallPoints.size() < 3) return null;
 
-        convexHullPoints = algorithm.runAlgorithm(this.overallPoints);
+        List<Point> temp = new ArrayList<Point>(this.overallPoints);
+        convexHullPoints = algorithm.runAlgorithm(temp);
 
         return convexHullPoints;
     }

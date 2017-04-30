@@ -15,7 +15,7 @@ public class Point {
     }
 
 
-    public Point isFarToWhichPoint(Point pointA, Point pointB){
+    public Point distanceToWhichPointIsLonger(Point pointA, Point pointB){
 
         int dsvA = this.getDistanceSquareValue(pointA);
         int dsvB = this.getDistanceSquareValue(pointB);
@@ -52,14 +52,22 @@ public class Point {
 
     }
 
-    public static int getCrossProductOfAcrossB(Point origin, Point a, Point b){
+    public int getCrossProductOfAcrossB( Point a, Point b){
 
-        int vectorA_x = a.xAxle - origin.xAxle;
-        int vectorA_y = a.yAxle - origin.yAxle;
-        int vectorB_x = b.xAxle - origin.xAxle;
-        int vectorB_y = b.yAxle - origin.yAxle;
+        int vectorA_x = a.xAxle - this.xAxle;
+        int vectorA_y = a.yAxle - this.yAxle;
+        int vectorB_x = b.xAxle - this.xAxle;
+        int vectorB_y = b.yAxle - this.yAxle;
 
         return (vectorA_x * vectorB_y) - (vectorA_y * vectorB_x);
+    }
+
+    public int getxAxle() {
+        return xAxle;
+    }
+
+    public int getyAxle() {
+        return yAxle;
     }
 
     @Override
@@ -70,5 +78,10 @@ public class Point {
 
         Point other = (Point)obj;
         return (this.xAxle == other.xAxle) && (this.yAxle == other.yAxle);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + xAxle + ", " + yAxle + ")";
     }
 }

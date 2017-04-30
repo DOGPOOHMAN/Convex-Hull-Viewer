@@ -23,8 +23,41 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm{
         this.leftMostPoint = findLeftMostPoint(overallPoints.iterator());
         convexHullPoints.add(leftMostPoint);
 
+        boolean flag = true;
+        Iterator<Point> overallIte;
+        Point candidate, other, lastCH;
+        lastCH = this.leftMostPoint;
 
-        return null;
+        while (flag){
+
+            overallIte = overallPoints.iterator();
+            candidate = overallIte.next();
+
+            while (overallIte.hasNext()){
+
+                other = overallIte.next();
+                int crossProduct = lastCH.getCrossProductOfAcrossB(candidate, other);
+                if (crossProduct > 0)
+                    candidate = other;
+                else if (crossProduct == 0){//candidate and other was on same line
+
+                    Point point = lastCH.distanceToWhichPointIsLonger(candidate, other);
+                    if (point == other){//choose longer distance as candidate
+                        candidate = other;
+                    }
+                }
+            }
+
+            if (candidate != this.leftMostPoint){
+                this.convexHullPoints.add(candidate);
+                lastCH = candidate;
+            }
+            else
+                flag = false;
+
+        }
+
+        return this.convexHullPoints;
     }
 
     private Point findLeftMostPoint(Iterator<Point> pointsIte){
