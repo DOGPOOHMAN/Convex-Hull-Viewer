@@ -13,22 +13,21 @@ class ControlPanel extends JPanel {
     JComboBox algoList;
     JButton autoAddBtn;
     JButton runOrCleanBtn;
-    private String[] algoNameList = {"Gift Wrapping", "Graham's Scan"};
     final static String CONTROL_PANEL = " Control Panel";
     final static String RUN = "Run";
     final static String CLEAN = "Clean";
 
     //只有PointViewAdapter 才能建立實體
-    ControlPanel(){
+    ControlPanel(String[] comboItemName){
 
         setLayout(new BorderLayout());
-        initComponentWithOrder();
+        initComponentWithOrder(comboItemName);
     }
 
-    private void initComponentWithOrder(){
+    private void initComponentWithOrder(String[] itemsName){
 
         pointAmountText = new JLabel("0");
-        algoList = new JComboBox(algoNameList);
+        algoList = new JComboBox(itemsName);
         algoList.setSelectedIndex(0);
         autoAddBtn = new JButton("Auto Add 50 Points");
         runOrCleanBtn = new JButton(RUN);

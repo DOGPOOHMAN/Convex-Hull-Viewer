@@ -1,7 +1,7 @@
 package panels;
 
 import convexAlgorithm.ConvexHull;
-import convexAlgorithm.GiftWrappingAlgo;
+import convexAlgorithm.ConvexHullAlgorithm;
 import convexAlgorithm.Point;
 import userInterface.InterfaceTool;
 
@@ -19,12 +19,14 @@ public class PointViewerAdapter extends ControlPanel {
 
     private PointViewerPanel mViewerPanel;
     private List<Point> mPointsOnPanel;
+    private ConvexHullAlgorithm[] mAlgorithms;
     private boolean mRunMode = true;
     private boolean mEarlyHadClean = false;
     private static final String mAPP_SAY = "Application say: ";
 
-    public PointViewerAdapter(PointViewerPanel panel){
-        super();
+    public PointViewerAdapter(PointViewerPanel panel, String[] algoName, ConvexHullAlgorithm[] algo){
+        super(algoName);
+        mAlgorithms = algo;
         mViewerPanel = panel;
         mPointsOnPanel = new ArrayList<>();
         initListener();
@@ -142,25 +144,13 @@ public class PointViewerAdapter extends ControlPanel {
 
     private List<Point> handleAlgorithmRunning(){
 
-        //infor total CH point amount
-        //run time
-        ConvexHull convexHull;
+        //依照使用者在ComboBox選擇的演算法，建立相對應的演算法實體
         int selected = algoList.getSelectedIndex();
-        switch (selected){
-            case 0:
-                convexHull = new ConvexHull(new GiftWrappingAlgo());
-                break;
-
-            case 1:
-                convexHull = new ConvexHull(new GiftWrappingAlgo());
-                break;
-
-            default:
-                convexHull = new ConvexHull(new GiftWrappingAlgo());
-        }
-
+        ConvexHull convexHull;
+        convexHull = new ConvexHull(mAlgorithms[selected]);
         convexHull.setOverallPoints(mPointsOnPanel);
 
+        //執行演算法取得ConvexHull-Points，並且記錄執行時間
         long startTime, runTime;
         List<Point>chPoints;
 
@@ -168,6 +158,7 @@ public class PointViewerAdapter extends ControlPanel {
         chPoints = convexHull.findConvexHullPoints();
         runTime   = System.nanoTime() - startTime;
 
+        //顯示實行結果於畫面上
         double runTimeSec = runTime * 1.0E-9d;
         String infor;
         infor = String.format("%s *Convex-Hull Points:%d     *Run Time:%f sec.",

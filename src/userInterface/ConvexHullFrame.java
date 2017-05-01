@@ -1,5 +1,6 @@
 package userInterface;
 
+import convexAlgorithm.ConvexHullAlgorithm;
 import panels.PointViewerAdapter;
 import panels.PointViewerPanel;
 
@@ -12,22 +13,43 @@ import java.awt.*;
  */
 public class ConvexHullFrame extends JFrame {
 
-    private JPanel pointViewerPanel;
+    private JPanel viewerPanel;
     private JPanel controlPanel;
     private int width = 650;
     private int height = 550;
 
-    public ConvexHullFrame(){
+    private String[] algorithmsName;
+    private ConvexHullAlgorithm[] algorithms;
+
+    private ConvexHullFrame(String[] algoName, ConvexHullAlgorithm[] algo){
+
+        this.algorithmsName = algoName;
+        this.algorithms = algo;
+
         initFrame();
         initPointViewerPanel();
         initControlPanel();
+        setVisible(true);
+    }
+
+    public static JFrame getConvexHullFrameInstance(String[] algoName, ConvexHullAlgorithm[] algo){
+
+        if (algoName == null || algo == null)
+            return null;
+
+        else if (algoName.length == 0 || algo.length == 0)
+            return null;
+
+        else if (algoName.length != algo.length)
+            return null;
+        else
+            return new ConvexHullFrame(algoName, algo);
     }
 
     private void initFrame(){
         setBounds(100, 100, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setVisible(true);
         setTitle("Convex Hull Viewer");
         setLayout(null);
     }
@@ -35,16 +57,19 @@ public class ConvexHullFrame extends JFrame {
 
     private void initPointViewerPanel() {
 
-        pointViewerPanel = new PointViewerPanel();
-        pointViewerPanel.setLayout(new BorderLayout(5, 5));
-        pointViewerPanel.setBounds(10, 70, width - 20, height - 100);
+        viewerPanel = new PointViewerPanel();
+        viewerPanel.setLayout(new BorderLayout(5, 5));
+        viewerPanel.setBounds(10, 70, width - 20, height - 100);
 
-        getContentPane().add(pointViewerPanel);
+        getContentPane().add(viewerPanel);
     }
 
     private void initControlPanel(){
 
-        controlPanel = new PointViewerAdapter((PointViewerPanel) pointViewerPanel);
+        controlPanel = new PointViewerAdapter((PointViewerPanel) viewerPanel,
+                algorithmsName,
+                algorithms);
+
         controlPanel.setBounds(0, 0,width, 60);
         controlPanel.setBackground(new Color(0x005AB5));
 
