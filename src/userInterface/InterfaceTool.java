@@ -19,17 +19,18 @@ public class InterfaceTool {
         if (addAmount > maxAddAmount) return -1;//無法加入那麼多數量的點
 
         int xAxel, yAxel, genAmount;
-        Random random = new Random();
 
         genAmount = 0;
 
         while(genAmount != addAmount){
 
-            long seed = System.currentTimeMillis();
-            random.setSeed(seed);
-            //nextInt(z) return [0,z)
-            xAxel = random.nextInt(xLength + 1);
-            yAxel = random.nextInt(yLength + 1);
+            //random() return [0,1)
+            int xRandom = (int)(Math.random() * 100000);
+            int yRandom = (int)(Math.random() * 100000);
+
+            //座標從零開始，所以不用加一
+            xAxel = xRandom % xLength;
+            yAxel = yRandom % yLength;
 
             Point temp = new Point(xAxel, yAxel);
 
