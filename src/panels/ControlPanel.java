@@ -1,71 +1,54 @@
-package userInterface;
+package panels;
 
-
-import convexAlgorithm.Point;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 /**
  * Created by rick-lee on 2017/4/30.
  */
-public class ControlPanel extends JPanel {
+class ControlPanel extends JPanel {
 
-    private List<Point>pointsOnPanel;
+    JLabel inforlText;
+    JLabel pointAmountText;
+    JComboBox algoList;
+    JButton autoAddBtn;
+    JButton runOrCleanBtn;
+    private String[] algoNameList = {"Gift Wrapping", "Graham's Scan"};
+    final static String CONTROL_PANEL = " Control Panel";
+    final static String RUN = "Run";
+    final static String CLEAN = "Clean";
 
-    private JLabel pointAmountText;
-    private JComboBox algoList;
-    private JButton autoAddBtn;
-    private JButton runBtn;
-    private String[] algoNameList = {"GiftWrapping", "Graham's Scan"};
+    //只有PointViewAdapter 才能建立實體
+    ControlPanel(){
 
-    public ControlPanel(List<Point> list){
-
-        this.pointsOnPanel = list;
         setLayout(new BorderLayout());
-        initComponentOrder();
-        initListener();
+        initComponentWithOrder();
     }
 
-    private void initComponentOrder(){
+    private void initComponentWithOrder(){
 
         pointAmountText = new JLabel("0");
         algoList = new JComboBox(algoNameList);
         algoList.setSelectedIndex(0);
         autoAddBtn = new JButton("Auto Add 50 Points");
-        runBtn = new JButton("Run");
+        runOrCleanBtn = new JButton(RUN);
+
+        JPanel leftSide = new JPanel(new FlowLayout());
+        leftSide.add(autoAddBtn);
+        leftSide.add(new JLabel("   Total Points:"));
+        leftSide.add(pointAmountText);
+
+        JPanel rightSide = new JPanel(new FlowLayout());
+        rightSide.add(new JLabel("  演算法"));
+        rightSide.add(algoList);
+        rightSide.add(runOrCleanBtn);
 
 
-        JPanel top = new JPanel(new FlowLayout());
-        top.add(autoAddBtn);
-        top.add(new JLabel("   Total Points:"));
-        top.add(pointAmountText);
-
-        JPanel down = new JPanel(new FlowLayout());
-        down.add(new JLabel("  演算法"));
-        down.add(algoList);
-        down.add(runBtn);
-
-
-        JLabel controlText = new JLabel("Control Panel");
-        controlText.setForeground(Color.white);
-        add(BorderLayout.NORTH, controlText);
-        add(BorderLayout.CENTER, top);
-        add(BorderLayout.EAST, down);
-    }
-
-    private void initListener(){
-
-    }
-
-    class autoAddListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            
-        }
+        inforlText = new JLabel(CONTROL_PANEL);
+        inforlText.setForeground(Color.white);
+        add(BorderLayout.NORTH, inforlText);
+        add(BorderLayout.CENTER, leftSide);
+        add(BorderLayout.EAST, rightSide);
     }
 
 }

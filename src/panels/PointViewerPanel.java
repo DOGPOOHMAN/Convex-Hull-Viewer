@@ -1,4 +1,4 @@
-package userInterface;
+package panels;
 
 
 import convexAlgorithm.Point;
@@ -13,16 +13,37 @@ import java.util.List;
  */
 public class PointViewerPanel extends JPanel {
 
-    List<Point>pointsOnPanel;
-    List<Point> points2DrawLine;
-    boolean drawLineMode = false;
 
-    public PointViewerPanel(List<Point> overallPoints){
+    private List<Point> pointsToDrawCircle;
+    private List<Point> pointsToDrawLine;
+    private boolean drawLineMode = false;
+    private boolean drawCircleMode = false;
+
+    public PointViewerPanel(){
 
         setBackground(Color.ORANGE);
         setLayout(new BorderLayout());
+    }
 
-        pointsOnPanel = overallPoints;
+    public void paintCircle(List<Point> circle){
+
+        if (circle == null) return;
+
+        this.pointsToDrawCircle = circle;
+        this.drawCircleMode = true;
+        repaint();
+    }
+
+    public void paintCircleAndLine(List<Point> circle, List<Point> line){
+
+        if (circle == null || line == null) return;
+
+        pointsToDrawCircle = circle;
+        pointsToDrawLine = line;
+
+        drawCircleMode = true;
+        drawLineMode = true;
+        repaint();
 
     }
 
@@ -31,55 +52,44 @@ public class PointViewerPanel extends JPanel {
         super.paint(g);
 
         g.drawString("Click to add new point.", getWidth()/2 - 80, getHeight()/2);
-        drawCircle(g);
+        if (drawCircleMode)
+            drawCircle(g);
         if (drawLineMode)
             drawLine(g);
 
     }
 
-    public void drawCircle(Graphics g){
+    private void drawCircle(Graphics g){
 
-        if (pointsOnPanel == null) return;
-
-        for (Iterator<Point> iterator = pointsOnPanel.iterator();
+        for (Iterator<Point> iterator = pointsToDrawCircle.iterator();
              iterator.hasNext(); ) {
 
             Point point =  iterator.next();
-            g.fillOval(point.getxAxle() - 2, point.getyAxle() - 2 , 4, 4);
+            g.fillOval(point.getxAxle() - Point.RADIUS,
+                    point.getyAxle() - Point.RADIUS ,
+                    Point.RADIUS * 2,
+                    Point.RADIUS * 2);
         }
+        drawCircleMode = false;
 
     }
 
-    public void drawLine(Graphics g){
+    private void drawLine(Graphics g){
 
-        drawLineMode = false;
-        if (points2DrawLine == null) return;
-
-        for (int i = 0; i < points2DrawLine.size(); i++) {
+        for (int i = 0; i < pointsToDrawLine.size(); i++) {
             Point start, end;
-            if (i != points2DrawLine.size() - 1){
-                start = points2DrawLine.get(i);
-                end = points2DrawLine.get(i+1);
+            if (i != pointsToDrawLine.size() - 1){
+                start = pointsToDrawLine.get(i);
+                end = pointsToDrawLine.get(i+1);
             }
             else
             {
-                start = points2DrawLine.get(i);
-                end = points2DrawLine.get(0);
+                start = pointsToDrawLine.get(i);
+                end = pointsToDrawLine.get(0);
             }
             g.drawLine(start.getxAxle(), start.getyAxle(), end.getxAxle(), end.getyAxle());
         }
+        drawLineMode = false;
     }
-
-    public void setPoints2DrawLine(List<Point> points2DrawLine) {
-        this.points2DrawLine = points2DrawLine;
-    }
-
-    public void enableDrawLineMode(){
-
-        this.drawLineMode = true;
-    }
-
-
-
 
 }

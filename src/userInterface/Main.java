@@ -30,20 +30,20 @@ public class Main {
 //
 //        List<Point> chPoints;
 //        ConvexHull convexHull = new ConvexHull(new GiftWrappingAlgo());
-//        List<Point> pointsOnPanel = new ArrayList<Point>();
-//        pointsOnPanel.add(new Point(1, 1));
-//        pointsOnPanel.add(new Point(4, 1));
-//        pointsOnPanel.add(new Point(1, 8));
-////        pointsOnPanel.add(new Point(4, 8));
+//        List<Point> pointsToDrawCircle = new ArrayList<Point>();
+//        pointsToDrawCircle.add(new Point(1, 1));
+//        pointsToDrawCircle.add(new Point(4, 1));
+//        pointsToDrawCircle.add(new Point(1, 8));
+////        pointsToDrawCircle.add(new Point(4, 8));
 ////
-//        pointsOnPanel.add(new Point(2, 6));
-////        pointsOnPanel.add(new Point(2, 7));
-//        pointsOnPanel.add(new Point(3, 6));
-////        pointsOnPanel.add(new Point(3, 7));
+//        pointsToDrawCircle.add(new Point(2, 6));
+////        pointsToDrawCircle.add(new Point(2, 7));
+//        pointsToDrawCircle.add(new Point(3, 6));
+////        pointsToDrawCircle.add(new Point(3, 7));
 ////
-////        pointsOnPanel.add(new Point(4, 9));
+////        pointsToDrawCircle.add(new Point(4, 9));
 //
-//        convexHull.setOverallPoints(pointsOnPanel);
+//        convexHull.setOverallPoints(pointsToDrawCircle);
 //        chPoints = convexHull.findConvexHullPoints();
 //        System.out.println(chPoints);
 //    }

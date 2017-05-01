@@ -1,7 +1,182 @@
-package userInterface;
+package panels;
+
+import convexAlgorithm.ConvexHull;
+import convexAlgorithm.GiftWrappingAlgo;
+import convexAlgorithm.Point;
+import userInterface.InterfaceTool;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by rick-lee on 2017/5/1.
  */
-public class PointViewerAdapter {
+public class PointViewerAdapter extends ControlPanel {
+
+    private PointViewerPanel mViewerPanel;
+    private List<Point> mPointsOnPanel;
+    private boolean mRunMode = true;
+    private boolean mEarlyHadClean = false;
+    private static final String mAPP_SAY = "Application say: ";
+
+    public PointViewerAdapter(PointViewerPanel panel){
+        super();
+        mViewerPanel = panel;
+        mPointsOnPanel = new ArrayList<>();
+        initListener();
+    }
+
+    private void initListener(){
+
+        autoAddBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                InterfaceTool.autoAddPoint(mPointsOnPanel,
+                        50,
+                        mViewerPanel.getWidth(),
+                        mViewerPanel.getHeight());
+
+                //update views
+                int amount = mPointsOnPanel.size();
+                pointAmountText.setText(Integer.toString(amount));
+                mViewerPanel.paintCircle(mPointsOnPanel);
+            }
+        });
+
+        runOrCleanBtn.addActionListener(new ActionListener() {
+            //this is mRunMode Listener
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (mRunMode != true) return;
+                if (mEarlyHadClean == true){
+                    mEarlyHadClean = false;
+                    return;
+                }
+
+                //according to ComboBox to new ConvexHull();
+                if (mPointsOnPanel.size() >= 3) {
+
+                    List<Point>convexHullPoint = handleAlgorithmRunning();
+
+                    //update Button
+                    mRunMode = false;
+                    runOrCleanBtn.setText(CLEAN);
+                    //close component function
+                    autoAddBtn.setEnabled(false);
+                    mViewerPanel.setEnabled(false);
+                    //repaint PointViewerPanel
+                    mViewerPanel.paintCircleAndLine(mPointsOnPanel, convexHullPoint);
+                }
+                else {
+                   inforlText.setText(mAPP_SAY + "At least 3 points on panel to run algorithm.");
+                }
+            }
+        });
+
+        runOrCleanBtn.addActionListener(new ActionListener() {
+            //this is cleanMode Listener
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (mRunMode == true)return;
+                mEarlyHadClean = true;
+
+                mRunMode = true;//轉換Listener Mode
+                runOrCleanBtn.setText(RUN);
+
+                mPointsOnPanel.clear();
+                pointAmountText.setText("0");
+
+                inforlText.setText(ControlPanel.CONTROL_PANEL);
+                autoAddBtn.setEnabled(true);
+                mViewerPanel.setEnabled(true);
+                mViewerPanel.repaint();
+            }
+        });
+
+        mViewerPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(mRunMode == false)return;
+
+                super.mouseClicked(e);
+
+                int xAxel = e.getX();
+                int yAxel = e.getY();
+                Point point = new Point(xAxel, yAxel);
+
+                //如果新的點不位於邊界區域，以及不存在於原本的List當中，就加入他
+                //因為檢查不位於邊界區域耗時短，所以優先檢查這個條件
+                if(InterfaceTool.isPointNotAtBorderArea(
+                        point,
+                        mViewerPanel.getWidth(),
+                        mViewerPanel.getHeight())
+                        ){
+
+                   boolean exist = mPointsOnPanel.contains(point);
+                   if (!exist){
+                       mPointsOnPanel.add(point);
+                       int size = mPointsOnPanel.size();
+                       pointAmountText.setText(Integer.toString(size));
+                       mViewerPanel.paintCircle(mPointsOnPanel);
+                   }
+                }
+            }
+        });
+    }
+
+
+    private void handleRunOrCleanBtnOfRunMode(){
+        //TODO move listener to this module
+    }
+
+
+    private void handleRunOrCleanBtnOfCleanMode(){
+
+    }
+
+
+    private List<Point> handleAlgorithmRunning(){
+
+        //infor total CH point amount
+        //run time
+        ConvexHull convexHull;
+        int selected = algoList.getSelectedIndex();
+        switch (selected){
+            case 0:
+                convexHull = new ConvexHull(new GiftWrappingAlgo());
+                break;
+
+            case 1:
+                convexHull = new ConvexHull(new GiftWrappingAlgo());
+                break;
+
+            default:
+                convexHull = new ConvexHull(new GiftWrappingAlgo());
+        }
+
+        convexHull.setOverallPoints(mPointsOnPanel);
+
+        long startTime, runTime;
+        List<Point>chPoints;
+
+        startTime = System.nanoTime();
+        chPoints = convexHull.findConvexHullPoints();
+        runTime   = System.nanoTime() - startTime;
+
+        double runTimeSec = runTime * 1.0E-9d;
+        String infor;
+        infor = String.format("%s *Convex-Hull Points:%d     *Run Time:%f sec.",
+                mAPP_SAY,
+                chPoints.size(),
+                runTimeSec);
+
+        inforlText.setText(infor);
+        return chPoints;
+    }
+
 }
