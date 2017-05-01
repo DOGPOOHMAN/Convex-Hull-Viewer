@@ -8,9 +8,9 @@ import java.awt.*;
  */
 class ControlPanel extends JPanel {
 
-    JLabel inforlText;
+    JLabel inforText;
     JLabel pointAmountText;
-    JComboBox algoList;
+    JComboBox algoComboBox;
     JButton autoAddBtn;
     JButton runOrCleanBtn;
     final static String CONTROL_PANEL = " Control Panel";
@@ -27,8 +27,8 @@ class ControlPanel extends JPanel {
     private void initComponentWithOrder(String[] itemsName){
 
         pointAmountText = new JLabel("0");
-        algoList = new JComboBox(itemsName);
-        algoList.setSelectedIndex(0);
+        algoComboBox = new JComboBox(itemsName);
+        algoComboBox.setSelectedIndex(0);
         autoAddBtn = new JButton("Auto Add 50 Points");
         runOrCleanBtn = new JButton(RUN);
 
@@ -39,13 +39,13 @@ class ControlPanel extends JPanel {
 
         JPanel rightSide = new JPanel(new FlowLayout());
         rightSide.add(new JLabel("  演算法"));
-        rightSide.add(algoList);
+        rightSide.add(algoComboBox);
         rightSide.add(runOrCleanBtn);
 
 
-        inforlText = new JLabel(CONTROL_PANEL);
-        inforlText.setForeground(Color.white);
-        add(BorderLayout.NORTH, inforlText);
+        inforText = new JLabel(CONTROL_PANEL);
+        inforText.setForeground(Color.white);
+        add(BorderLayout.NORTH, inforText);
         add(BorderLayout.CENTER, leftSide);
         add(BorderLayout.EAST, rightSide);
     }

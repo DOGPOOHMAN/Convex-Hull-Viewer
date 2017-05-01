@@ -75,7 +75,7 @@ public class PointViewerAdapter extends ControlPanel {
                     mViewerPanel.paintCircleAndLine(mPointsOnPanel, convexHullPoint);
                 }
                 else {
-                   inforlText.setText(mAPP_SAY + "At least 3 points on panel to run algorithm.");
+                   inforText.setText(mAPP_SAY + "At least 3 points on panel to run algorithm.");
                 }
             }
         });
@@ -93,7 +93,7 @@ public class PointViewerAdapter extends ControlPanel {
                 mPointsOnPanel.clear();
                 pointAmountText.setText("0");
 
-                inforlText.setText(ControlPanel.CONTROL_PANEL);
+                inforText.setText(ControlPanel.CONTROL_PANEL);
                 autoAddBtn.setEnabled(true);
                 mViewerPanel.setEnabled(true);
                 mViewerPanel.repaint();
@@ -145,7 +145,7 @@ public class PointViewerAdapter extends ControlPanel {
     private List<Point> handleAlgorithmRunning(){
 
         //依照使用者在ComboBox選擇的演算法，建立相對應的演算法實體
-        int selected = algoList.getSelectedIndex();
+        int selected = algoComboBox.getSelectedIndex();
         ConvexHull convexHull;
         convexHull = new ConvexHull(mAlgorithms[selected]);
         convexHull.setOverallPoints(mPointsOnPanel);
@@ -166,7 +166,7 @@ public class PointViewerAdapter extends ControlPanel {
                 chPoints.size(),
                 runTimeSec);
 
-        inforlText.setText(infor);
+        inforText.setText(infor);
         return chPoints;
     }
 
