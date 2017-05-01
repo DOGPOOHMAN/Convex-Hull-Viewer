@@ -23,11 +23,6 @@ public class ConvexHull {
         this.overallPoints = list;
     }
 
-    public List<Point> getConvexHullPoints(){
-
-        return this.convexHullPoints;
-    }
-
     public List<Point> findConvexHullPoints(){
 
         if (overallPoints == null) return null;

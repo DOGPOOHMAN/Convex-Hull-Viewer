@@ -5,6 +5,7 @@ package convexAlgorithm;
  */
 public class Point {
 
+    public static final int RADIUS = 2;
     private int xAxle;
     private int yAxle;
 
