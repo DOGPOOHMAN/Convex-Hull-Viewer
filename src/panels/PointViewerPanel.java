@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PointViewerPanel extends JPanel {
 
-
+    public static final int RADIUS = 2;
     private List<Point> pointsToDrawCircle;
     private List<Point> pointsToDrawLine;
     private boolean drawLineMode = false;
@@ -65,10 +65,10 @@ public class PointViewerPanel extends JPanel {
              iterator.hasNext(); ) {
 
             Point point =  iterator.next();
-            g.fillOval(point.getxAxle() - Point.RADIUS,
-                    point.getyAxle() - Point.RADIUS ,
-                    Point.RADIUS * 2,
-                    Point.RADIUS * 2);
+            g.fillOval(point.getxAxle() - RADIUS,
+                    point.getyAxle() - RADIUS ,
+                    RADIUS * 2,
+                    RADIUS * 2);
         }
         drawCircleMode = false;
 

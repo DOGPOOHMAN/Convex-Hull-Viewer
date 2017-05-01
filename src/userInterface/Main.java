@@ -1,10 +1,9 @@
 package userInterface;
 
 import convexAlgorithm.ConvexHullAlgorithm;
-import convexAlgorithm.GiftWrappingAlgo;
+import implementAlgorithm.GiftWrappingAlgo;
 
 import java.awt.*;
-import java.util.HashMap;
 
 /**
  * Created by rick-lee on 2017/4/30.

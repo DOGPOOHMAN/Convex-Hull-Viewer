@@ -1,9 +1,9 @@
 package userInterface;
 
 import convexAlgorithm.Point;
+import panels.PointViewerPanel;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by rick-lee on 2017/4/30.
@@ -13,7 +13,7 @@ public class InterfaceTool {
     public static int autoAddPoint(List<Point>pointList, int addAmount, int xLength, int yLength){
 
         if (addAmount <= 0) return 0;
-        int maxPoint = (xLength - Point.RADIUS * 2) * (yLength - Point.RADIUS * 2);
+        int maxPoint = (xLength - PointViewerPanel.RADIUS * 2) * (yLength - PointViewerPanel.RADIUS * 2);
         int maxAddAmount = maxPoint - pointList.size();//還能加入的數量
 
         if (addAmount > maxAddAmount) return -1;//無法加入那麼多數量的點
@@ -52,10 +52,10 @@ public class InterfaceTool {
 
     public static boolean isPointNotAtBorderArea(Point p, int xLength, int yLength){
 
-        int x_RightBound = xLength - 1 - Point.RADIUS;
-        int x_LeftBound = Point.RADIUS;
-        int y_RightBound = yLength - 1 - Point.RADIUS;
-        int y_LeftBound = Point.RADIUS;
+        int x_RightBound = xLength - 1 - PointViewerPanel.RADIUS;
+        int x_LeftBound = PointViewerPanel.RADIUS;
+        int y_RightBound = yLength - 1 - PointViewerPanel.RADIUS;
+        int y_LeftBound = PointViewerPanel.RADIUS;
 
         return (x_LeftBound <= p.getxAxle()) &&
                 (p.getxAxle() <= x_RightBound) &&
