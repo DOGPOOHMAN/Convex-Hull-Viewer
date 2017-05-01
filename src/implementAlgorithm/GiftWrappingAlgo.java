@@ -16,6 +16,19 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm {
     private List<Point> convexHullPoints;
     private List<GiftWrapPoint> overallGWPoint;
 
+
+    @Override
+    public List<Point> runAlgorithm(List<Point> overallPoints) {
+
+        GiftWrappingAlgo giftWrappingAlgo;
+        List<Point> points;
+
+        giftWrappingAlgo = new GiftWrappingAlgo();
+        points = giftWrappingAlgo.getConvexHullPoints(overallPoints);
+
+        return points;
+    }
+
     public GiftWrappingAlgo(){
 
         this.overallGWPoint = new ArrayList<GiftWrapPoint>();
@@ -32,8 +45,24 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm {
         }
     }
 
-    @Override
-    public List<Point> runAlgorithm(List<Point> overallPoints) {
+
+    private GiftWrapPoint findLeftMostPoint(Iterator<GiftWrapPoint> pointsIte){
+
+        GiftWrapPoint candidate = pointsIte.next();
+        GiftWrapPoint point;
+
+        while (pointsIte.hasNext()) {
+
+            point = pointsIte.next();
+            if (candidate.isItLeftMostThen(point))
+                candidate = point;
+        }
+
+        return candidate;
+    }
+
+
+    public List<Point> getConvexHullPoints(List<Point> overallPoints) {
 
         convertPointToGitWrapPoint(overallPoints);
 
@@ -78,21 +107,5 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm {
 
         return this.convexHullPoints;
     }
-
-    private GiftWrapPoint findLeftMostPoint(Iterator<GiftWrapPoint> pointsIte){
-
-        GiftWrapPoint candidate = pointsIte.next();
-        GiftWrapPoint point;
-
-        while (pointsIte.hasNext()) {
-
-            point = pointsIte.next();
-            if (candidate.isItLeftMostThen(point))
-                candidate = point;
-        }
-
-        return candidate;
-    }
-
 
 }
