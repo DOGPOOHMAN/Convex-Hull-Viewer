@@ -2,6 +2,7 @@ package userInterface;
 
 import convexAlgorithm.ConvexHullAlgorithm;
 import implementAlgorithm.GiftWrappingAlgo;
+import implementAlgorithm.GrahamScanAlgo;
 
 import java.awt.*;
 
@@ -12,11 +13,11 @@ public class Main {
 
     public static void main(String[] args){
 
-        String[] algoName
+        final String[] algoName
                 = {"Gift Wrapping", "Graham's Scan"};
 
-        ConvexHullAlgorithm[] algorithms
-                = {new GiftWrappingAlgo(), new GiftWrappingAlgo()};
+        final ConvexHullAlgorithm[] algorithms
+                = {new GiftWrappingAlgo(), new GrahamScanAlgo()};
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
