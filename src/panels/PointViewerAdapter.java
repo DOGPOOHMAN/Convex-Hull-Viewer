@@ -51,54 +51,64 @@ public class PointViewerAdapter extends ControlPanel {
         });
 
         runOrCleanBtn.addActionListener(new ActionListener() {
-            //this is mRunMode Listener
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (mRunMode != true) return;
-                if (mEarlyHadClean == true){
-                    mEarlyHadClean = false;
-                    return;
-                }
-
-                //according to ComboBox to new ConvexHull();
-                if (mPointsOnPanel.size() >= 3) {
-
-                    List<Point>convexHullPoint = handleAlgorithmRunning();
-
-                    //update Button
-                    mRunMode = false;
-                    runOrCleanBtn.setText(CLEAN);
-                    //close component function
-                    autoAddBtn.setEnabled(false);
-                    mViewerPanel.setEnabled(false);
-                    //repaint PointViewerPanel
-                    mViewerPanel.paintCircleAndLine(mPointsOnPanel, convexHullPoint);
-                }
-                else {
-                   inforText.setText(mAPP_SAY + "At least 3 points on panel to run algorithm.");
-                }
+                if (mRunMode == true)
+                    handleRunMode();
+                else
+                    handleCleanMode();
             }
         });
 
-        runOrCleanBtn.addActionListener(new ActionListener() {
-            //this is cleanMode Listener
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (mRunMode == true)return;
-                mEarlyHadClean = true;
-
-                mRunMode = true;//轉換Listener Mode
-                runOrCleanBtn.setText(RUN);
-
-                mPointsOnPanel.clear();
-                pointAmountText.setText("0");
-
-                inforText.setText(ControlPanel.CONTROL_PANEL);
-                autoAddBtn.setEnabled(true);
-                mViewerPanel.setEnabled(true);
-                mViewerPanel.repaint();
-            }
-        });
+//        runOrCleanBtn.addActionListener(new ActionListener() {
+//            //this is mRunMode Listener
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if (mRunMode != true) return;
+//                if (mEarlyHadClean == true){
+//                    mEarlyHadClean = false;
+//                    return;
+//                }
+//
+//                //according to ComboBox to new ConvexHull();
+//                if (mPointsOnPanel.size() >= 3) {
+//
+//                    List<Point>convexHullPoint = handleAlgorithmRunning();
+//
+//                    //update Button
+//                    mRunMode = false;
+//                    runOrCleanBtn.setText(CLEAN);
+//                    //close component function
+//                    autoAddBtn.setEnabled(false);
+//                    mViewerPanel.setEnabled(false);
+//                    //repaint PointViewerPanel
+//                    mViewerPanel.paintCircleAndLine(mPointsOnPanel, convexHullPoint);
+//                }
+//                else {
+//                   inforText.setText(mAPP_SAY + "At least 3 points on panel to run algorithm.");
+//                }
+//            }
+//        });
+//
+//        runOrCleanBtn.addActionListener(new ActionListener() {
+//            //this is cleanMode Listener
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if (mRunMode == true)return;
+//                mEarlyHadClean = true;
+//
+//                mRunMode = true;//轉換Listener Mode
+//                runOrCleanBtn.setText(RUN);
+//
+//                mPointsOnPanel.clear();
+//                pointAmountText.setText("0");
+//
+//                inforText.setText(ControlPanel.CONTROL_PANEL);
+//                autoAddBtn.setEnabled(true);
+//                mViewerPanel.setEnabled(true);
+//                mViewerPanel.repaint();
+//            }
+//        });
 
         mViewerPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -132,13 +142,40 @@ public class PointViewerAdapter extends ControlPanel {
     }
 
 
-    private void handleRunOrCleanBtnOfRunMode(){
-        //TODO move listener to this module
+    private void handleRunMode(){
+        //according to ComboBox to new ConvexHull();
+        if (mPointsOnPanel.size() >= 3) {
+
+            List<Point>convexHullPoint = handleAlgorithmRunning();
+
+            //update Button
+            mRunMode = false;
+            runOrCleanBtn.setText(CLEAN);
+            //close component function
+            autoAddBtn.setEnabled(false);
+            mViewerPanel.setEnabled(false);
+            //repaint PointViewerPanel
+            mViewerPanel.paintCircleAndLine(mPointsOnPanel, convexHullPoint);
+        }
+        else {
+            inforText.setText(mAPP_SAY + "At least 3 points on panel to run algorithm.");
+        }
     }
 
 
-    private void handleRunOrCleanBtnOfCleanMode(){
+    private void handleCleanMode(){
+        mEarlyHadClean = true;
 
+        mRunMode = true;//轉換Listener Mode
+        runOrCleanBtn.setText(RUN);
+
+        mPointsOnPanel.clear();
+        pointAmountText.setText("0");
+
+        inforText.setText(ControlPanel.CONTROL_PANEL);
+        autoAddBtn.setEnabled(true);
+        mViewerPanel.setEnabled(true);
+        mViewerPanel.repaint();
     }
 
 
