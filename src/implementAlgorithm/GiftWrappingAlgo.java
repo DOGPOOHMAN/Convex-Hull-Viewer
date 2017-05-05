@@ -12,36 +12,46 @@ import java.util.List;
  */
 public class GiftWrappingAlgo implements ConvexHullAlgorithm {
 
-    private GiftWrapPoint leftMostPoint;
-    private List<Point> convexHullPoints;
-    private List<GiftWrapPoint> overallGWPoint;
+    private GiftWrapPoint leftMostPoint;//最左下角的點
+    private List<GiftWrapPoint> overallPointsAsGWP;//平面上所有的點
+    private List<Point> convexHullPoints;//所有的凸包頂點
 
 
     @Override
     public List<Point> runAlgorithm(List<Point> overallPoints) {
 
-        GiftWrappingAlgo giftWrappingAlgo;
-        List<Point> points;
+        List<Point> tempResult;
+        initMemberVariables();
+        convertPointObjToGiftWrapPointObj(overallPoints);
+        getConvexHullPoints();
 
-        giftWrappingAlgo = new GiftWrappingAlgo();
-        points = giftWrappingAlgo.getConvexHullPoints(overallPoints);
-
-        return points;
+        tempResult = new ArrayList<>(convexHullPoints);
+        //GC Member-Variables and elements which collected by List
+        initMemberVariables();
+        return tempResult;
     }
 
     public GiftWrappingAlgo(){
 
-        this.overallGWPoint = new ArrayList<GiftWrapPoint>();
+        this.overallPointsAsGWP = new ArrayList<GiftWrapPoint>();
         this.convexHullPoints = new ArrayList<Point>();
     }
 
-    private void convertPointToGitWrapPoint(List<Point> list){
+
+    private void initMemberVariables(){
+
+        leftMostPoint = null;
+        overallPointsAsGWP.clear();
+        convexHullPoints.clear();
+    }
+
+    private void convertPointObjToGiftWrapPointObj(List<Point> list){
 
         GiftWrapPoint gwPoint;
         for (Point point : list) {
 
             gwPoint = new GiftWrapPoint(point.getxAxle(), point.getyAxle());
-            overallGWPoint.add(gwPoint);
+            overallPointsAsGWP.add(gwPoint);
         }
     }
 
@@ -62,27 +72,28 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm {
     }
 
 
-    public List<Point> getConvexHullPoints(List<Point> overallPoints) {
+    private void getConvexHullPoints() {
 
-        convertPointToGitWrapPoint(overallPoints);
-
-        this.leftMostPoint = findLeftMostPoint(overallGWPoint.iterator());
+        this.leftMostPoint = findLeftMostPoint(overallPointsAsGWP.iterator());
         convexHullPoints.add(leftMostPoint);
 
         boolean flag = true;
         Iterator<GiftWrapPoint> overallIte;
         GiftWrapPoint candidate, other, lastCH;
-        lastCH = this.leftMostPoint;
 
+        //從leftMostPoint開始尋找所有的凸包頂點，找到就加入convexHullPoints之中
+        lastCH = this.leftMostPoint;
         while (flag){
 
-            overallIte = overallGWPoint.iterator();
+            overallIte = overallPointsAsGWP.iterator();
             candidate = overallIte.next();
-
+            //把最後加入凸包頂點，與平面上的某兩點做外積，篩選外機比較小的那個點，作為候選者
+            //與平面上所有的點做上述的演算法後，即可求得新的一個凸包頂點
             while (overallIte.hasNext()){
 
                 other = overallIte.next();
                 int crossProduct = lastCH.getCrossProductOfAcrossB(candidate, other);
+
                 if (crossProduct > 0)
                     candidate = other;
                 else if (crossProduct == 0){//candidate and other was on same line
@@ -95,7 +106,7 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm {
                     }
                 }
             }
-
+            //當新找到的凸包頂點等於leftMostPoint結束演算法
             if (candidate != this.leftMostPoint){
                 this.convexHullPoints.add(candidate);
                 lastCH = candidate;
@@ -103,9 +114,7 @@ public class GiftWrappingAlgo implements ConvexHullAlgorithm {
             else
                 flag = false;
 
-        }
-
-        return this.convexHullPoints;
+        }//end of while (flag)
     }
 
 }
