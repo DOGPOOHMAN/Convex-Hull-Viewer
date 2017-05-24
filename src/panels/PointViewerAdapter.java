@@ -21,7 +21,6 @@ public class PointViewerAdapter extends ControlPanel {
     private List<Point> mPointsOnPanel;
     private ConvexHullAlgorithm[] mAlgorithms;
     private boolean mRunMode = true;
-    private boolean mEarlyHadClean = false;
     private static final String mAPP_SAY = "Application say: ";
 
     public PointViewerAdapter(PointViewerPanel panel, String[] algoName, ConvexHullAlgorithm[] algo){
@@ -114,11 +113,10 @@ public class PointViewerAdapter extends ControlPanel {
 
 
     private void handleCleanMode(){
-        mEarlyHadClean = true;
 
         mRunMode = true;//轉換Listener Mode
         runOrCleanBtn.setText(RUN);
-
+        //GC elements under mPointsOnPanel
         mPointsOnPanel.clear();
         pointAmountText.setText("0");
 
